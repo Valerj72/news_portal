@@ -1,0 +1,211 @@
+Windows PowerShell
+(C) Корпорация Майкрософт, 2014. Все права защищены.
+
+(.venv) PS C:\Users\Sony\PycharmProjects\news_portal> cd project
+(.venv) PS C:\Users\Sony\PycharmProjects\news_portal\project> python manage.py shell
+Python 3.11.7 (tags/v3.11.7:fa7a6f2, Dec  4 2023, 19:24:49) [MSC v.1937 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from news_portal.models import*
+>>> u1 = User.objects.get(username='Валерий')
+>>> u2 = User.objects.get(username='Артём')
+>>> u1
+<User: Валерий>
+>>> u2
+<User: Артём>
+>>> Author.objects.get(user=u1)
+<Author: Author object (1)>
+>>> Author.objects.get(user=u2)
+<Author: Author object (2)>
+>>> Category.objects.get(name='news')
+<Category: Category object (1)>
+>>> Category.objects.get(name='sport')
+<Category: Category object (2)>
+>>> Category.objects.get(name='health')
+<Category: Category object (3)>
+>>> Category.objects.get(name='interesting')
+<Category: Category object (4)>
+>>> author = Author.objects.get(id=1)
+>>> author = Author.objects.get(id=2)
+>>> Post.objects.get(author=author, post_type='NW', article_title='sometitle', article_text='somebigtext')
+<Post: Post object (1)>
+>>> Post.objects.get(id=1)
+<Post: Post object (1)>
+>>> Post.objects.get(id=1).article_title
+'sometitle'
+>>> Post.objects.get(id=1).category.add(Category.objects.get(id=1))
+>>> Post.objects.get(id=1).category.add(Category.objects.get(id=4))
+>>> Comment.objects.get(post=Post.objects.get(id=1), user=Author.objects.get(id=1).user, comment_text='anytextbyauthor')
+<Comment: Comment object (1)>
+>>> Post.objects.get(author=author, post_type='AR', article_title='grosstitle', article_text='somelitletext')
+<Post: Post object (2)>
+>>> Comment.objects.get(post=Post.objects.get(id=2), user=Author.objects.get(id=1).user, comment_text='twotextbyauthor')
+<Comment: Comment object (2)>
+>>> Post.objects.get(author=author, post_type='AR', article_title='litletitle', article_text='sometext')
+<Post: Post object (3)>
+>>> Comment.objects.get(post=Post.objects.get(id=3), user=Author.objects.get(id=2).user, comment_text='textbyauthor')
+<Comment: Comment object (3)>
+>>> Post.objects.get(author=author, post_type='NW', article_title='freetitle', article_text='sometextfree')
+<Post: Post object (4)>
+>>> Comment.objects.get(post=Post.objects.get(id=4), user=Author.objects.get(id=1).user, comment_text='textbyauthortwo')
+<Comment: Comment object (4)>
+>>> Comment.objects.get(id=1).rating
+3
+>>> Comment.objects.get(id=2).rating
+-2
+>>> Comment.objects.get(id=3).rating
+0
+>>> Comment.objects.get(id=4).rating
+0
+>>> Comment.objects.get(id=3).dislike()
+>>> Comment.objects.get(id=3).rating
+-1
+>>> Author.objects.get(id=2)
+<Author: Author object (2)>
+>>> a = Author.objects.get(id=2)
+>>> a.update_rating()
+>>> a.rating
+23
+>>> Author.objects.get(id=1)
+<Author: Author object (1)>
+>>> a = Author.objects.get(id=2)
+>>> a1 = Author.objects.get(id=1)
+>>> a1.update_rating()
+>>> a1.rating
+1
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).rating
+1
+>>>  Author.objects.get(id=1)
+  File "<console>", line 1
+    Author.objects.get(id=1)
+IndentationError: unexpected indent
+>>>  Author.objects.get(id=2)
+  File "<console>", line 1
+    Author.objects.get(id=2)
+IndentationError: unexpected indent
+>>> Author.objects.get(id=2)like()
+  File "<console>", line 1
+    Author.objects.get(id=2)like()
+                            ^^^^
+SyntaxError: invalid syntax
+>>> Author.objects.get(id=4)
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "C:\Users\Sony\PycharmProjects\news_portal\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sony\PycharmProjects\news_portal\.venv\Lib\site-packages\django\db\models\query.py", line 649, in get
+    raise self.model.DoesNotExist(
+news_portal.models.Author.DoesNotExist: Author matching query does not exist.
+>>> Author.objects.get(id=1)
+<Author: Author object (1)>
+>>> Author.objects.get(id=1).like()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Author' object has no attribute 'like'
+>>> Author.objects.get(id=4)
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "C:\Users\Sony\PycharmProjects\news_portal\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sony\PycharmProjects\news_portal\.venv\Lib\site-packages\django\db\models\query.py", line 649, in get
+    raise self.model.DoesNotExist(
+news_portal.models.Author.DoesNotExist: Author matching query does not exist.
+>>> Author.objects.get(id=2)
+<Author: Author object (2)>
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).rating
+2
+>>>  Author.objects.get(id=2)
+  File "<console>", line 1
+    Author.objects.get(id=2)
+IndentationError: unexpected indent
+>>> a.update_rating()
+>>> a.rating
+25
+>>> a1.update_rating()
+>>> a1.rating
+3
+>>> Post.objects.get(id=1)
+<Post: Post object (1)>
+>>> a1.update_rating()
+>>> a1.rating
+3
+>>> Post.objects.get(id=2)
+<Post: Post object (2)>
+>>> a.update_rating()
+>>> a.rating
+25
+>>> a = Author.objects.order_by('-rating')[:1]
+>>> a1 = Author.objects.order_by('-rating')[:1]
+>>> a1
+<QuerySet [<Author: Author object (2)>]>
+>>> a
+<QuerySet [<Author: Author object (2)>]>
+>>> a1
+<QuerySet [<Author: Author object (2)>]>
+>>> a = Author.objects.order_by('-rating')[:1]
+>>> a
+<QuerySet [<Author: Author object (2)>]>
+>>> for i in a:
+... rating
+  File "<console>", line 2
+    rating
+    ^^^^^^
+IndentationError: expected an indented block after 'for' statement on line 1
+>>> i.rating
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'i' is not defined
+>>> for i in a:
+... i.rating
+  File "<console>", line 2
+    i.rating
+    ^
+IndentationError: expected an indented block after 'for' statement on line 1
+>>> for i in a1:
+... i.rating
+  File "<console>", line 2
+    i.rating
+    ^
+IndentationError: expected an indented block after 'for' statement on line 1
+>>> for i in a:
+... i.ratingAuthor
+  File "<console>", line 2
+    i.ratingAuthor
+    ^
+IndentationError: expected an indented block after 'for' statement on line 1
+>>> a.rating
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'QuerySet' object has no attribute 'rating'
+>>> for i in a1:
+... i.rating()
+  File "<console>", line 2
+    i.rating()
+    ^
+IndentationError: expected an indented block after 'for' statement on line 1
+>>> for i in a:
+...     i.rating
+...     i.User.username
+...
+25
+Traceback (most recent call last):
+  File "<console>", line 3, in <module>
+AttributeError: 'Author' object has no attribute 'User'
+>>> for i in a:
+...     i.rating
+...     i.user.username
+...
+25
+'Артём'
+>>> for i in a:
+...     i.time_in
+...     i.user.username
+...
+Traceback (most recent call last):
+  File "<console>", line 2, in <module>
+AttributeError: 'Author' object has no attribute 'time_in'
+>>>
