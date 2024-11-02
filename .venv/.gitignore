@@ -1,0 +1,4 @@
+.gitignor
+.venv/
+.idea/
+__picache__/
