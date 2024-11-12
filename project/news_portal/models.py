@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from .resources import POST_TYPES, news
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
+from django.urls import reverse
 
 
 class Author(models.Model):
@@ -23,6 +24,13 @@ class Category(models.Model):
 
 
 class Post(models.Model):
+    articles = 'A'
+    news = 'N'
+    POSITIONS = [
+        (articles, 'статья'),
+        (news, 'новость')
+    ]
+
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='posts')
     post_type = models.CharField(max_length=2, choices=POST_TYPES, default=news)
     time_in = models.DateTimeField(auto_now_add=True)
@@ -41,6 +49,9 @@ class Post(models.Model):
 
     def preview(self):
         return f"{self.article_text[:124]}..."
+
+    def get_absolute_url(self):
+        return reverse('flatpages/news', args=[str(self.article_title)])
 
 
 class PostCategory(models.Model):
