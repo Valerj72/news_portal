@@ -6,19 +6,13 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = [
+            'author',
             'article_title',
+            'article_text',
             'category',
         ]
 
-    class PostForm(forms.ModelForm):
-        class Meta:
-            model = Post
-            fields = [
-                'article_title',
-                'category',
-            ]
-
-    def clean_data(self):
+    def clean_article_title(self):
         article_title = self.cleaned_data["article_title"]
         if article_title[0].islower():
             raise ValidationError(

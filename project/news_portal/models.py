@@ -18,9 +18,15 @@ class Author(models.Model):
         self.rating = posts_rating * 3 + comments_rating + posts_comments_rating
         self.save()
 
+    def __str__(self):
+        return self.user.username
+
 
 class Category(models.Model):
     name = models.CharField(max_length=25, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Post(models.Model):
@@ -51,7 +57,7 @@ class Post(models.Model):
         return f"{self.article_text[:124]}..."
 
     def get_absolute_url(self):
-        return reverse('flatpages/news', args=[str(self.article_title)])
+        return reverse('post_detail', args=[str(self.pk)])
 
 
 class PostCategory(models.Model):
