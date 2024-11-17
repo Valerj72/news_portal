@@ -46,13 +46,9 @@ class PostList(ListView):
         context = super().get_context_data(**kwargs)
         # К словарю добавим текущую дату в ключ 'time_now'.
         context['time_now'] = datetime.utcnow()
-        context['filterset'] = self.filterset
+        if self.request.path == '/posts/search/':
+            context['filterset'] = self.filterset
         return context
-
-    def get_template_names(self):
-        if self.request.path == '/post/search/':
-            return 'flatpages/search.html'
-        return 'flatpages/news.html'
 
 
 class PostDetail(DetailView):
