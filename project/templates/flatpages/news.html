@@ -18,12 +18,24 @@ News
    <h1>{{ posts|length }}</h1>
    <h3>{{ time_now|date:'d M Y' }}</h3>
    <hr>
+
+   {# Теперь будем проверять не request.user.is_authenticated, а конкретные права #}
+   {% if perms.news_portal.add_post %}
+   <a href="{% url 'post_create' %}">Добавить статью</a>
+   {% endif %}
+
    {% if posts %}
        <table>
            <tr>
                <td>Заголовок</td>
                <td>Дата публикации</td>
                <td>Текст статьи</td>
+
+               {# Условие получается составным. #}
+               {% if perms.news_portal.change_post or perms.news_portal.delete_post %}
+               <td>Действия</td>
+               {% endif %}
+
            </tr>
 
            {% for post in posts %}
@@ -31,6 +43,17 @@ News
                <td>{{ post.article_title }}</td>
                <td>{{ post.time_in }}</td>
                <td>{{ post.article_text|truncatewords:20 }}</td>
+
+               <td>
+                    {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
+                    {% if perms.news_portal.change_post %}
+                    <a href="{% url 'post_update' pk=post.id %}">Изменить</a>
+                    {% endif %}
+                    {% if perms.news_portal.delete_post %}
+                    <a href="{% url 'post_delete' post.id %}">Удалить</a>
+                    {% endif %}
+                </td>
+
            </tr>
            {% endfor %}
        </table>
