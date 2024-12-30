@@ -28,7 +28,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-class Subscription(models.Model):
+class Subscriber(models.Model):
     user = models.ForeignKey(
         to=User,
         on_delete=models.CASCADE,
