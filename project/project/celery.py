@@ -7,3 +7,13 @@ app = Celery('project')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 app.autodiscover_tasks()
+
+app.conf.beat.schedule = {
+    'periodic_tasks': {
+        'task': 'tasks.periodic_tasks',
+        'schedule': 5
+    }
+}
+
+
+
