@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .resources import POST_TYPES, news
+from .resources import POST_TYPES
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from django.urls import reverse
@@ -52,7 +52,7 @@ class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='posts')
     post_type = models.CharField(max_length=2, choices=POST_TYPES, default=news)
     time_in = models.DateTimeField(auto_now_add=True)
-    category = models.ManyToManyField(Category, through='PostCategory')
+    category = models.ManyToManyField(Category, through='PostCategory', related_name='posts')
     article_title = models.CharField(max_length=200)
     article_text = models.TextField()
     rating = models.IntegerField(default=0)
