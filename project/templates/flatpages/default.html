@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 {% load static %}
+{% load cache %}
 <html lang="en">
+{% cache 60 head %}
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -11,10 +13,12 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
+    {% endcache %}
     <body>
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
             <div class="container">
+            {% cache 60 nav1 %}
                 <a class="navbar-brand" href="#">Django flatpages</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarResponsive"
@@ -22,8 +26,10 @@
                         aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+            {% endcache %}
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
+                    {% cache 60 nav2 %}
                         <li class="nav-item active">
                             <a class="nav-link" href="#">Home
                                 <span class="sr-only">(current)</span>
@@ -32,6 +38,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/news/">Project</a>
                         </li>
+                    {% endcache %}
                     </ul>
                 </div>
             </div>
