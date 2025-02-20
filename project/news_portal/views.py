@@ -1,9 +1,10 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.db.models import Exists, OuterRef
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
-from datetime import datetime
+import datetime
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -50,7 +51,7 @@ class PostList(ListView):
         # В ответе мы должны получить словарь.
         context = super().get_context_data(**kwargs)
         # К словарю добавим текущую дату в ключ 'time_now'.
-        context['time_now'] = datetime.utcnow()
+        context['time_now'] = datetime.datetime.now(datetime.UTC)
         if self.request.path == '/posts/search/':
             context['filterset'] = self.filterset
         return context
@@ -60,6 +61,20 @@ class PostDetail(DetailView):
     model = Post
     template_name = 'flatpages/post.html'
     context_object_name = 'post'
+
+    def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
+        obj = cache.get(f'post-{self.kwargs["pk"]}')
+        print('********')
+        print(obj)
+        print('********')
+
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+            print('//////////')
+            print(obj)
+            print('//////////')
+        return obj
 
 
 class PostCreate(PermissionRequiredMixin, CreateView):

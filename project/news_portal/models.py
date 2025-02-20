@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.db import models
 from django.contrib.auth.models import User
 from .resources import POST_TYPES
@@ -65,11 +66,18 @@ class Post(models.Model):
         self.rating -= 1
         self.save()
 
+    @property
     def preview(self):
-        return f"{self.article_text[:124]}..."
+        if len(f'{self.article_text}') > 124:
+            return f"{self.article_text[:124]}..."
+        return self.article_text
 
     def get_absolute_url(self):
         return reverse('post_detail', args=[str(self.pk)])
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # сначала вызываем метод родителя, чтобы объект сохранился
+        cache.delete(f'post-{self.pk}')  # затем удаляем его из кэша, чтобы сбросить его
 
 
 class PostCategory(models.Model):
