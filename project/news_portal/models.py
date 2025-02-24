@@ -50,13 +50,13 @@ class Post(models.Model):
         (news, 'новость')
     ]
 
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='posts')
-    post_type = models.CharField(max_length=2, choices=POST_TYPES, default=news)
-    time_in = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='posts', verbose_name='Автор')
+    post_type = models.CharField(max_length=2, choices=POST_TYPES, default=news, verbose_name='Тип')
+    time_in = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
     category = models.ManyToManyField(Category, through='PostCategory', related_name='posts')
-    article_title = models.CharField(max_length=200)
-    article_text = models.TextField()
-    rating = models.IntegerField(default=0)
+    article_title = models.CharField(max_length=200, verbose_name='Заголовок')
+    article_text = models.TextField(verbose_name='Текст')
+    rating = models.IntegerField(default=0, verbose_name='Рейтинг')
 
     def like(self):
         self.rating += 1
