@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from modeltranslation.admin import TranslationAdmin
 from .models import *
 
 
@@ -43,8 +43,16 @@ class AuthorAdmin(admin.ModelAdmin):
     list_display_links = ('user',)
 
 
-admin.site.register(Post, PostAdmin)
-admin.site.register(Category, CategoryAdmin)
+class TransCategoryAdmin(TranslationAdmin):
+    model = Category
+
+
+class TransPostAdmin(PostAdmin, TranslationAdmin):
+    model = Post
+
+
+admin.site.register(Post, TransPostAdmin)
+admin.site.register(Category, TransCategoryAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Author, AuthorAdmin)
 

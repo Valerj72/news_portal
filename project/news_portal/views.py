@@ -3,8 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.db.models import Exists, OuterRef
 from django.shortcuts import render
+from django.http.response import HttpResponse
+from django.views import View
 from django.views.decorators.csrf import csrf_protect
+from django.utils import timezone
+from django.shortcuts import redirect
 import datetime
+import pytz
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -137,3 +142,22 @@ def subscriptions(request):
         'subscriptions.html',
         {'categories': categories_with_subscriptions},
     )
+
+
+class Index(View):
+    def get(self, request):
+        # .  Translators: This message appears on the home page only
+        models = Post.objects.all()
+
+        context = {
+            'models': models,
+            'current_time': timezone.localtime(timezone.now()),
+            'timezones': pytz.common_timezones  # добавляем в контекст все доступные часовые пояса
+        }
+
+        return HttpResponse(render(request, 'index.html', context))
+
+    #  по пост-запросу будем добавлять в сессию часовой пояс, который и будет обрабатываться написанным нами ранее middleware
+    def post(self, request):
+        request.session['django_timezone'] = request.POST['timezone']
+        return redirect('/')

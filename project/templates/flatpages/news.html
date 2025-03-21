@@ -2,6 +2,7 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
 {% load custom_tags %}
+{% load i18n %}
 
 {% block title %}
 News
@@ -14,26 +15,26 @@ News
        {# Добавим кнопку отправки данных формы #}
        <input type="submit" value="Найти" />
 </form>
-   <h1>Все новости</h1>
+   <h1>{% trans 'All news' %}</h1>
    <h1>{{ posts|length }}</h1>
    <h3>{{ time_now|date:'d M Y' }}</h3>
    <hr>
 
    {# Теперь будем проверять не request.user.is_authenticated, а конкретные права #}
    {% if perms.news_portal.add_post %}
-   <a href="{% url 'articles_create' %}">Добавить статью</a>
+   <a href="{% url 'articles_create' %}">{% trans 'Add article' %}</a>
    {% endif %}
 
    {% if posts %}
        <table>
            <tr>
-               <td>Заголовок</td>
-               <td>Дата публикации</td>
-               <td>Текст статьи</td>
+               <td>{% trans 'Heading' %}</td>
+               <td>{% trans 'Date of publication' %}</td>
+               <td>{% trans 'Article text' %}</td>
 
                {# Условие получается составным. #}
                {% if perms.news_portal.change_post or perms.news_portal.delete_post %}
-               <td>Действия</td>
+               <td>{% trans 'Actions' %}</td>
                {% endif %}
 
            </tr>
@@ -47,10 +48,10 @@ News
                <td>
                     {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
                     {% if perms.news_portal.change_post %}
-                    <a href="{% url 'post_update' pk=post.id %}">Изменить</a>
+                    <a href="{% url 'post_update' pk=post.id %}">{% trans 'Change' %}</a>
                     {% endif %}
                     {% if perms.news_portal.delete_post %}
-                    <a href="{% url 'post_delete' post.id %}">Удалить</a>
+                    <a href="{% url 'post_delete' post.id %}">{% trans 'Delete' %}</a>
                     {% endif %}
                 </td>
 

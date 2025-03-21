@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
+{% load i18n %}
 
 
 {% block content %}
 <table>
     <tr>
-        <td>Заголовок</td>
-        <td>Дата публикации</td>
-        <td>Содержание</td>
-        <td>Категория</td>
+        <td>{% trans 'Heading' %}</td>
+        <td>{% trans 'Date of publication' %} </td>
+        <td>{% trans 'Content' %}</td>
+        <td>{% trans 'Category' %}</td>
     </tr>
     <tr>
         <td>{{ post.article_title }}</td>

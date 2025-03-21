@@ -23,4 +23,5 @@ urlpatterns = [
     path('pages/', include('django.contrib.flatpages.urls')),
     path('', include('news_portal.urls')),
     path("__debug__/", include("debug_toolbar.urls")),
+    path('i18n/', include('django.conf.urls.i18n')),
     ]
