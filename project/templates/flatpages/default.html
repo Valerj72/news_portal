@@ -60,14 +60,20 @@
         <input type="submit" value="set">
     </form>
 
-    {{ TIME_ZONE }}
-    {{ current_time|timezone:TIME_ZONE }} <!-- Отображаем время в выбранном часовом поясе  -->
+    {% get_current_timezone as TIME_ZONE %}
+    <form action="{% url 'set_session_timezone' %}" method="POST">
+        {% csrf_token %}
+        <label for="timezone">Time zone:</label>
+        <select name="timezone">
+            {% for tz in timezones %}
+            <option value="{{ tz }}"{% if tz == TIME_ZONE %} selected{% endif %}>{{ tz }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Set">
+    </form>
 
-    {% for model in models %}
-    <div class="model-class">
-        {{ model.name }}
-    </div>
-    {% endfor %}
+<p style="color: #3dd5f3">{{ TIME_ZONE }}: {{ current_time|timezone:TIME_ZONE }}</p>
+
                  </div>
             </div>
         </nav>

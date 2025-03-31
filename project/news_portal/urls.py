@@ -1,6 +1,6 @@
 from django.urls import path
 # Импортируем созданное нами представление
-from .views import PostList, PostDetail, PostCreate, PostUpdate, PostDelete, subscriptions
+from .views import PostList, PostDetail, PostCreate, PostUpdate, PostDelete, subscriptions, set_session_timezone
 
 
 urlpatterns = [
@@ -20,5 +20,6 @@ urlpatterns = [
    path('news/<int:pk>/delete/', PostDelete.as_view(), name='post_delete'),
    path('articles/<int:pk>/delete/', PostDelete.as_view(), name='post_delete'),
    path('subscriptions/', subscriptions, name='subscriptions'),
+   path('timezone/', set_session_timezone, name='set_session_timezone'),
 
 ]

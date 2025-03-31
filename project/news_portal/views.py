@@ -143,21 +143,7 @@ def subscriptions(request):
         {'categories': categories_with_subscriptions},
     )
 
-
-class Index(View):
-    def get(self, request):
-        # .  Translators: This message appears on the home page only
-        models = Post.objects.all()
-
-        context = {
-            'models': models,
-            'current_time': timezone.localtime(timezone.now()),
-            'timezones': pytz.common_timezones  # добавляем в контекст все доступные часовые пояса
-        }
-
-        return HttpResponse(render(request, 'index.html', context))
-
-    #  по пост-запросу будем добавлять в сессию часовой пояс, который и будет обрабатываться написанным нами ранее middleware
-    def post(self, request):
+def set_session_timezone(request):
+    if request.method == 'POST':
         request.session['django_timezone'] = request.POST['timezone']
-        return redirect('/')
+        return redirect(request.META.get('HTTP_REFERER'))
