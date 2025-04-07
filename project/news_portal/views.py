@@ -14,10 +14,14 @@ from django.urls import reverse_lazy
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
+from rest_framework import viewsets
 
 from .filters import PostFilter
 from .forms import PostForm
-from .models import Post, Subscriber, Category
+
+from .serializers import *
+from .models import *
+
 
 
 
@@ -147,3 +151,33 @@ def set_session_timezone(request):
     if request.method == 'POST':
         request.session['django_timezone'] = request.POST['timezone']
         return redirect(request.META.get('HTTP_REFERER'))
+
+
+class AuthorViewset(viewsets.ModelViewSet):
+   queryset = Author.objects.all()
+   serializer_class = AuthorSerializer
+
+
+class CategoryViewset(viewsets.ModelViewSet):
+   queryset = Category.objects.all()
+   serializer_class = CategorySerializer
+
+
+class SubscriberViewset(viewsets.ModelViewSet):
+   queryset = Subscriber.objects.all()
+   serializer_class = SubscriberSerializer
+
+
+class PostViewset(viewsets.ModelViewSet):
+   queryset = Post.objects.all()
+   serializer_class = PostSerializer
+
+
+class PostCategoryViewset(viewsets.ModelViewSet):
+   queryset = PostCategory.objects.all()
+   serializer_class = PostCategorySerializer
+
+
+class CommentViewset(viewsets.ModelViewSet):
+   queryset = Comment.objects.all()
+   serializer_class = CommentSerializer
