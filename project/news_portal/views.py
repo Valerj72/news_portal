@@ -1,21 +1,24 @@
-import datetime
-
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.db.models import Exists, OuterRef
-from django.shortcuts import redirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.http.response import HttpResponse
+from django.views import View
 from django.views.decorators.csrf import csrf_protect
+from django.utils import timezone
+from django.shortcuts import redirect
+import datetime
+import pytz
+from django.urls import reverse_lazy
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
-from rest_framework import viewsets
-from rest_framework import permissions
+
 from .filters import PostFilter
 from .forms import PostForm
-from .serializers import *
-from .models import *
+from .models import Post, Subscriber, Category
+
 
 
 class PostList(ListView):
@@ -144,33 +147,3 @@ def set_session_timezone(request):
     if request.method == 'POST':
         request.session['django_timezone'] = request.POST['timezone']
         return redirect(request.META.get('HTTP_REFERER'))
-
-
-class AuthorViewset(viewsets.ModelViewSet):
-   queryset = Author.objects.all()
-   serializer_class = AuthorSerializer
-
-
-class CategoryViewset(viewsets.ModelViewSet):
-   queryset = Category.objects.all()
-   serializer_class = CategorySerializer
-
-
-class SubscriberViewset(viewsets.ModelViewSet):
-   queryset = Subscriber.objects.all()
-   serializer_class = SubscriberSerializer
-
-
-class PostViewset(viewsets.ModelViewSet):
-   queryset = Post.objects.all()
-   serializer_class = PostSerializer
-
-
-class PostCategoryViewset(viewsets.ModelViewSet):
-   queryset = PostCategory.objects.all()
-   serializer_class = PostCategorySerializer
-
-
-class CommentViewset(viewsets.ModelViewSet):
-   queryset = Comment.objects.all()
-   serializer_class = CommentSerializer
