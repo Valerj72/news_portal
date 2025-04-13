@@ -1,6 +1,5 @@
 from django.urls import path
-# Импортируем созданное нами представление
-from .views import PostList, PostDetail, PostCreate, PostUpdate, PostDelete, subscriptions, set_session_timezone
+from .views import *
 
 
 urlpatterns = [
