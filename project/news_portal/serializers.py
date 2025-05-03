@@ -5,34 +5,34 @@ from rest_framework import serializers
 class AuthorSerializer(serializers.HyperlinkedModelSerializer):
    class Meta:
        model = Author
-       fields = ['id', 'name', ]
+       fields = "__all__"
 
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
    class Meta:
        model = Category
-       fields = ['id', 'grade', ]
+       fields = "__all__"
 
 
 class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
    class Meta:
        model = Subscriber
-       fields = ['id', 'name', ]
+       fields = "__all__"
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
    class Meta:
        model = Post
-       fields = ['id', 'name', ]
+       fields = "__all__"
 
 
 class PostCategorySerializer(serializers.HyperlinkedModelSerializer):
    class Meta:
        model = PostCategory
-       fields = ['id', 'name', ]
+       fields = "__all__"
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
    class Meta:
        model = Comment
-       fields = ['id', 'name', ]
+       fields = "__all__"
