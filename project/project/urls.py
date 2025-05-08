@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from news_portal import views
+from .yasg import urlpatterns as doc_urls
 
 
 router = routers.DefaultRouter()
@@ -31,11 +32,12 @@ router.register(r'comment', views.CommentViewset)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include("router.urls")),
+    path('api/', include(router.urls)),
     path('api-auth/', include("rest_framework.urls", namespace='rest_framework')),
     path("accounts/", include("allauth.urls")),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('', include('news_portal.urls')),
     path("__debug__/", include("debug_toolbar.urls")),
     path('i18n/', include('django.conf.urls.i18n')),
-    ]
+]
+urlpatterns += doc_urls

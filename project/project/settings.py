@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'django_apscheduler',
     'debug_toolbar',
     'rest_framework',
+    'drf_yasg',
 ]
 
 SITE_ID = 1
